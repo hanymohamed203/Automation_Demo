@@ -1,0 +1,23 @@
+{
+  "UserName": "Hany",
+  "UserMail": "hany3200000000000@gmail.com",
+  "AccountInformation": {
+    "UserGender": "Male",
+    "Password": "12345",
+    "Day": "20",
+    "Month": "3",
+    "Year": "2001",
+    "FirstName": "Hany",
+    "Newsletter": "true",
+    "SpecialOffer": "false",
+    "LastName": "Moahmed",
+    "Company": "Gizasystems",
+    "Address1": "zaiton",
+    "Address2": "ghrbya",
+    "Country": "Canada",
+    "State": "012",
+    "City": "City",
+    "ZipCode": "123123",
+    "MobileNumber": "01127029519"
+  }
+}
