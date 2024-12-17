@@ -63,6 +63,8 @@ jobs:
           name: Allure Report Windows edge
           path: target/site/allure-maven-plugin/index.html
 
+                  #hanyy
+
 
   E2E_Ubuntu_Chrome:
     runs-on: ubuntu-latest
