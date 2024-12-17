@@ -5,7 +5,7 @@ on:
     inputs:
       testsPath:
         description: 'Path to Tests to be Executed'
-        default: 'POM_Tests.AutomationExerciseTests'
+        default: 'Registration_tests/RegistrationAndDeletionOfAccount.java'
       testsPath_Headless:
         description: 'headless state'
         default: 'true'
@@ -42,7 +42,7 @@ jobs:
           maven-version: 3.9.9
 
       - name: Execute Tests
-        run: mvn -DBrowserName="edge" -Dtest="${{ github.event.inputs.testsPath }}" test
+        run: mvn -DbrowserName="chrome" -Dtest="${{ github.event.inputs.testsPath }}" test
 
       - name: Publish Report
         continue-on-error: true
@@ -63,7 +63,7 @@ jobs:
           name: Allure Report Windows edge
           path: target/site/allure-maven-plugin/index.html
 
-                  #hanyy
+
 
 
   E2E_Ubuntu_Chrome:
