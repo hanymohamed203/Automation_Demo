@@ -29,7 +29,7 @@ on:
                   maven-version: 3.9.9
 
               - name: Execute Tests
-                run: mvn -DBrowserName="chrome" -Dtest="${{ github.event.inputs.testsPath }}" test
+                run: mvn -DbrowserName="chrome" -Dtest="${{ github.event.inputs.testsPath }}" test
 
               - name: Publish Report
                 continue-on-error: true
