@@ -5,50 +5,103 @@ on:
     inputs:
       testsPath:
         description: 'Path to Tests to be Executed'
-        default: 'Registration_tests/RegistrationAndDeletionOfAccount.java'
+        default: 'POM_Tests.AutomationExerciseTests'
+      testsPath_Headless:
+        description: 'headless state'
+        default: 'true'
+  ##change cron time
+  schedule:
+    - cron: "*/10 * * * *"
 
-        jobs:
-          E2E_Test_WindowsTest:
-            runs-on: windows-latest
-            permissions:
-              checks: write
+  ##comment to try pull request
+  ##new comment
+  ##test test
+  pull_request:
+    branches:
+      - main
 
-            steps:
-              - name: Checkout Code
-                uses: actions/checkout@v4
+jobs:
+  E2E_Test_WindowsTest:
+    runs-on: windows-latest
+    permissions:
+      checks: write
 
-              - name: Setup Java JDK
-                uses: actions/setup-java@v4
-                with:
-                  distribution: 'zulu'
-                  java-version: '21'
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-              - name: Setup Maven
-                uses: stCarolas/setup-maven@v5
-                with:
-                  maven-version: 3.9.9
+      - name: Setup Java JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '21'
 
-              - name: Execute Tests
-                run: mvn -DBrowserName="chrome" -Dtest="${{ github.event.inputs.testsPath }}" test
+      - name: Setup Maven
+        uses: stCarolas/setup-maven@v5
+        with:
+          maven-version: 3.9.9
 
-              - name: Publish Report
-                continue-on-error: true
-                uses: dorny/test-reporter@v1
-                if: success() || failure()
-                with:
-                  name: Tests Report Ubuntu Chrome
-                  path: 'target/surefire-reports/TEST-*.xml'
-                  reporter: java-junit
+      - name: Execute Tests
+        run: mvn -DBrowserName="edge" -Dtest="${{ github.event.inputs.testsPath }}" test
 
-              - name: Generate Allure Report
-                continue-on-error: true
-                run: mvn allure:report
+      - name: Publish Report
+        continue-on-error: true
+        uses: dorny/test-reporter@v1
+        if: success() || failure()
+        with:
+          name: Tests Report Ubuntu Chrome
+          path: 'target/surefire-reports/TEST-*.xml'
+          reporter: java-junit
 
-              - name: Upload Allure Report
-                uses: actions/upload-artifact@v3
-                with:
-                  name: Allure Report Windows edge
-                  path: target/site/allure-maven-plugin/index.html
+      - name: Generate Allure Report
+        continue-on-error: true
+        run: mvn allure:report
+
+      - name: Upload Allure Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: Allure Report Windows edge
+          path: target/site/allure-maven-plugin/index.html
 
 
+  E2E_Ubuntu_Chrome:
+    runs-on: ubuntu-latest
+    permissions:
+      checks: write
 
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Java JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '21'
+
+      - name: Set up Maven
+        uses: stCarolas/setup-maven@v4.5
+        with:
+          maven-version: 3.9.6
+
+      - name: Execute Tests
+        run: mvn -DBrowserName="chrome" -DHeadLessBrowsing="${{ github.event.inputs.testsPath_Headless || true }}" -Dtest="${{ github.event.inputs.testsPath }}" test
+
+      - name: Publish Report
+        continue-on-error: true
+        uses: dorny/test-reporter@v1
+        if: success() || failure()
+        with:
+          name: Tests Report Ubuntu Chrome
+          path: 'target/surefire-reports/TEST-*.xml'
+          reporter: java-junit
+
+      - name: Generate Allure Report
+        continue-on-error: true
+        run: mvn allure:report
+
+      - name: Upload Allure Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: Allure Report Ubuntu Chrome
+          path: target/site/allure-maven-plugin/index.html
