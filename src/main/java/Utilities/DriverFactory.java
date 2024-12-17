@@ -11,9 +11,9 @@ public class DriverFactory {
     static WebDriver driver;
 
     public static WebDriver initiateDriver(String browserName,boolean maximize,boolean headless) {
-        if (browserName.equalsIgnoreCase("chrome")&& headless) {
+        if (browserName.equalsIgnoreCase("chrome")&& headless==true) {
             ChromeOptions options = new ChromeOptions();
-            options.addArguments("headless"); // Run Chrome in headless mode
+            options.addArguments("headless");
             System.out.println("the chrome browser will run in headless");
             driver = new ChromeDriver(options);
             System.out.println("intializing Chrome Browser on OS : "+System.getProperty("os.name")+"and the version is "+System.getProperty("os.version"));
